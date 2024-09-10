@@ -12,6 +12,7 @@ public class Player extends CoreEntitiy
         super(name, id, damage, health, money);
         this.maxHealth = health; // maximum can oluşturulan karakterin canı kadar olucaktır
         this.blok = 0; // Oyun başladığında
+        this.envanter = new Envanter();
     }
 
     public void updateDmage()

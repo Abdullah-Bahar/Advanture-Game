@@ -3,7 +3,7 @@ package bahar.com.entity.core.character;
 public class CoreEntitiy
 {
     private String name;
-    private final int id;
+    private int id;
     private int damage;
     private int health;
     private int money;
@@ -57,5 +57,9 @@ public class CoreEntitiy
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
     }
 }

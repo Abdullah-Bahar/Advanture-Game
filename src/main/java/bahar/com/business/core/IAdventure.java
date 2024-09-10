@@ -6,7 +6,7 @@ import bahar.com.entity.core.character.Player;
 public interface IAdventure
 {
     void Intro();
-    void Initialize(String name, int id);
+    void InitializePlayer(String name, int id);
     void History();
     void CreatePlayer(int id);
     void LocationChange(int id);

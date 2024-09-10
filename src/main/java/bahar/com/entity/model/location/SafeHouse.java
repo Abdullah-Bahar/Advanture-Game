@@ -9,10 +9,4 @@ public class SafeHouse extends SafeLocation
     public SafeHouse() {
         super(NAME, ID);
     }
-
-    public void HealthRenewal()
-    {
-        // oyuncu güvenli eve geldiğinde canını yenilicek
-    }
-
 }
