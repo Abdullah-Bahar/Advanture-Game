@@ -2,6 +2,12 @@ package bahar.com.presentetion.service;
 
 import bahar.com.business.service.AdventureService;
 import bahar.com.business.service.SafeHouseService;
+import bahar.com.business.service.StoreService;
+import bahar.com.entity.core.thing.Armor;
+import bahar.com.entity.core.thing.Weapon;
+import bahar.com.entity.model.armor.Heavy;
+import bahar.com.entity.model.armor.Light;
+import bahar.com.entity.model.armor.Medium;
 import bahar.com.entity.model.character.Archer;
 import bahar.com.entity.model.character.Knight;
 import bahar.com.entity.model.character.Samurai;
@@ -9,8 +15,10 @@ import bahar.com.entity.model.location.Cave;
 import bahar.com.entity.model.location.Forest;
 import bahar.com.entity.model.location.River;
 import bahar.com.entity.model.location.SafeHouse;
-import bahar.com.entity.model.monster.Zombie;
-import bahar.com.exception.InvalidCharacterIdException;
+import bahar.com.entity.model.weapon.Pistol;
+import bahar.com.entity.model.weapon.Rifle;
+import bahar.com.entity.model.weapon.Sword;
+import bahar.com.exception.InValidIdException;
 import bahar.com.presentetion.core.IGame;
 
 import java.util.InputMismatchException;
@@ -20,10 +28,12 @@ public class GameService implements IGame
 {
     private AdventureService adventureService;
     private SafeHouseService safeHouseService;
+    private StoreService storeService;
     private Scanner input;
 
     public GameService() {
         this.adventureService = new AdventureService();
+        this.storeService = new StoreService();
         input = new Scanner(System.in);
     }
 
@@ -69,10 +79,10 @@ public class GameService implements IGame
             {
                 characterId = input.nextInt();
                 if (!ValidInputId(characterId, Samurai.ID, Archer.ID, Knight.ID))
-                    throw new InvalidCharacterIdException("\nHATA : Geçersiz ID. Lütfen geçerli bir ID giriniz.\n");
+                    throw new InValidIdException("\nHATA : Geçersiz ID. Lütfen geçerli bir ID giriniz.\n");
                 break; // Geçerli ID girilmemişse buraya gelmeden hata fırlatılacak. Eğer doğru girerse bir sorun olmadan loop'tan çıkacaktır
             }
-            catch (InvalidCharacterIdException e)
+            catch (InValidIdException e)
             {
                 System.out.println(e.getMessage());
             }
@@ -122,10 +132,10 @@ public class GameService implements IGame
             {
                 locationDoGoId = input.nextInt();
                 if (!(ValidInputId(locationDoGoId, SafeHouse.ID, Cave.ID, River.ID, Forest.ID) || locationDoGoId == locationID))
-                    throw new InvalidCharacterIdException("HATA : Geçersiz ID. Lütfen geçerli bir ID giriniz.");
+                    throw new InValidIdException("HATA : Geçersiz ID. Lütfen geçerli bir ID giriniz.");
                 break;
             }
-            catch (InvalidCharacterIdException e)
+            catch (InValidIdException e)
             {
                 System.out.println(e.getMessage());;
             }
@@ -180,6 +190,190 @@ public class GameService implements IGame
     private void GoToDoRiver() {
     }
 
+    /*********** STORE *************/
+    private void GoToDoStore() {
+        storeService.WelcomeToStore();
+
+        SelectedCategoriesStoreId();
+    }
+
+    // Kategori sayfası menüsü için
+    private void SelectedCategoriesStoreId()
+    {
+        int selectedId;
+
+        selectedId = getSelectedId(storeService::PrintCategories,0,1,2);
+
+        switch (selectedId)
+        {
+            case 0: // Bir önceki sayfaya döner
+                GoToDoHouse();
+                break;
+            case 1: // Zırhlar içim
+                SelectedArmorStoreId();
+                break;
+            case 2: // Silahlar için
+                SelectedWeaponStoreId();
+                break;
+        }
+    }
+
+    // Kategori olan Weapon ürünleri sayfası
+    private void SelectedWeaponStoreId()
+    {
+        int selectedId;
+
+        selectedId = getSelectedId(storeService::PrintWeepon,0, Pistol.ID, Rifle.ID, Sword.ID);
+        switch (selectedId)
+        {
+            case 0: // Bir önceki sayfaya döner
+                GoToDoStore();
+                break;
+            case Pistol.ID: // Zırhlar içim
+                BuyWeapoonById(Pistol.ID);
+                break;
+            case Rifle.ID: // Silahlar için
+                BuyWeapoonById(Rifle.ID);
+                break;
+            case Sword.ID: // Silahlar için
+                BuyWeapoonById(Sword.ID);
+                break;
+        }
+
+        // İşlemlerden sonra aynı sayfada kalması için
+        SelectedWeaponStoreId();
+    }
+
+    // Kategori olan Armor ürünleri sayfası
+    private void SelectedArmorStoreId()
+    {
+        int selectedId;
+
+        selectedId = getSelectedId(storeService::PrintArmor,0, Heavy.ID, Light.ID, Medium.ID);
+        switch (selectedId)
+        {
+            case 0: // Bir önceki sayfaya döner
+                GoToDoStore();
+                break;
+            case Heavy.ID: // Zırhlar içim
+                BuyArmorById(Heavy.ID);
+                break;
+            case Medium.ID: // Silahlar için
+                BuyArmorById(Medium.ID);
+                break;
+            case Light.ID: // Silahlar için
+                BuyArmorById(Light.ID);
+                break;
+        }
+
+        // İşlemlerden sonra aynı sayfada kalması için
+        SelectedArmorStoreId();
+    }
+
+    private void BuyWeapoonById(int id) {
+        Weapon weapon = storeService.BuyWeepon(id);
+        boolean doYouHaveMoney = storeService.CheckMoney(adventureService.getPlayer().getMoney(), weapon.getPrice());
+
+        // Parası çıkışmaz ise
+        if (!doYouHaveMoney)
+        {
+            System.out.println("HATA : Satın alma işleminiz gerçekleşemedi. Yetersiz Bakiye.");
+            System.out.println("Mevcut Bakiyeniz : " + adventureService.getPlayer().getMoney());
+            System.out.println("Almak istediğiniz Ürün Fiyatı : " + weapon.getPrice());
+            adventureService.NewLine();
+            return;
+        }
+
+        // Ürün zaten mevcut ise
+        if (adventureService.getPlayer().getEnvanter().getWeapon().getId() == weapon.getId())
+        {
+            System.out.println("HATA : Satın alma işleminiz gerçekleşemedi. Ürün zaten mevcut.");
+            System.out.println("Almak istediğiniz başka bir ürün seçebilirsiz");
+            return;
+        }
+
+        // Oyuncunun parası eksildi
+        adventureService.getPlayer().setMoney(adventureService.getPlayer().getMoney() - weapon.getPrice());
+        // Oyuncunun envanterine armor eklendi
+        adventureService.getPlayer().getEnvanter().setWeapon(weapon);
+        // Oyuncu saldırı güncellendi
+        adventureService.getPlayer().setDamage(adventureService.getPlayer().getDamage() + weapon.getDmage());
+
+        // Ürün hakkında ve kalan bakiye hakkında bilgilendirme
+        System.out.println("Tebrikler... Satım alma işleminin gerçekleşti.");
+        System.out.println("Aldığını ürün : " + adventureService.getPlayer().getEnvanter().getWeapon().getName());
+        System.out.println("Mevcut Bakiyeniz : " + adventureService.getPlayer().getMoney());
+        adventureService.NewLine();
+    }
+
+    private void BuyArmorById(int id) {
+
+        Armor armor = storeService.BuyArmor(id);
+        boolean doYouHaveMoney = storeService.CheckMoney(adventureService.getPlayer().getMoney(), armor.getPrice());
+
+        // Parası çıkışmaz ise
+        if (!doYouHaveMoney)
+        {
+            System.out.println("HATA : Satın alma işleminiz gerçekleşemedi. Yetersiz Bakiye.");
+            System.out.println("Mevcut Bakiyeniz : " + adventureService.getPlayer().getMoney());
+            System.out.println("Almak istediğiniz Ürün Fiyatı : " + armor.getPrice());
+            adventureService.NewLine();
+            return;
+        }
+
+        // Ürün zaten mevcut ise
+        if (adventureService.getPlayer().getEnvanter().getWeapon().getId() == armor.getId())
+        {
+            System.out.println("HATA : Satın alma işleminiz gerçekleşemedi. Ürün zaten mevcut.");
+            System.out.println("Almak istediğiniz başka bir ürün seçebilirsiz");
+            return;
+        }
+
+        // Oyuncunun parası eksildi
+        adventureService.getPlayer().setMoney(adventureService.getPlayer().getMoney() - armor.getPrice());
+        // Oyuncunun envanterine armor eklendi
+        adventureService.getPlayer().getEnvanter().setArmor(armor);
+        // Oyuncu saldırı güncellendi
+        adventureService.getPlayer().setBlok(armor.getBlock());
+
+        // Ürün hakkında ve kalan bakiye hakkında bilgilendirme
+        System.out.println("Tebrikler... Satım alma işleminin gerçekleşti.");
+        System.out.println("Aldığını ürün : " + adventureService.getPlayer().getEnvanter().getArmor().getName());
+        System.out.println("Mevcut Bakiyeniz : " + adventureService.getPlayer().getMoney());
+        adventureService.NewLine();
+    }
+
+    // Menülerin listelenmesi - İlgili menüye gitmek için tıklanan tışun kontrolü
+    private int getSelectedId(Runnable printAction, int... validIds) {
+        int selectedId;
+        while (true)
+        {
+            System.out.println("Lütfen Seçim Yapınız : (Geri Çıkmak İçin 0'ı tışlayınız)");
+            printAction.run();
+            System.out.print("Seçeneğiniz : ");
+            try
+            {
+                selectedId = input.nextInt();
+                if (!(ValidInputId(selectedId, validIds)))
+                    throw new InValidIdException("\nHATA : Geçersiz Seçenek. Lütfen Tekrar Deneyin!\n");
+                break;
+            }
+            catch (InValidIdException e)
+            {
+                System.out.println(e.getMessage());
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.println("\nHATA : Geçersiz giriş. Lütfen bir sayı girin.\n");
+                input.next(); // Hatalı girdiyi temizler. Eğer bu satırı silersen hatalı girişte döngüye girersin.
+            }
+        }
+        adventureService.NewLine();
+        return selectedId;
+    }
+    /***********************************/
+
+
 
     /*********** SAFE HOUSE *************/
     private void GoToDoHouse()
@@ -191,10 +385,10 @@ public class GameService implements IGame
         if (adventureService.getPlayer().getHealth() != adventureService.getPlayer().getMaxHealth())
             safeHouseService.HealthRenewal();
 
-        SelectedOptionId();
+        SelectedOptionHouseId();
     }
 
-    private void SelectedOptionId()
+    private void SelectedOptionHouseId()
     {
         int selectecId;
 
@@ -206,10 +400,10 @@ public class GameService implements IGame
             {
                 selectecId = input.nextInt();
                 if (!(ValidInputId(selectecId, 1,2,3,4)))
-                    throw new InvalidCharacterIdException("HATA : Geçersiz Seçenek. Lütfen Tekrar Deneyin!");
+                    throw new InValidIdException("HATA : Geçersiz Seçenek. Lütfen Tekrar Deneyin!");
                 break;
             }
-            catch (InvalidCharacterIdException e)
+            catch (InValidIdException e)
             {
                 System.out.println(e.getMessage());
             }
@@ -229,14 +423,18 @@ public class GameService implements IGame
         {
             case 1: // Karakter
                 safeHouseService.PrintCharacterStatus();
-                SelectedOptionId();
+                SelectedOptionHouseId();
+                break;
             case 2: // Encanter
                 safeHouseService.ShowEnvanter();
-                SelectedOptionId();
+                SelectedOptionHouseId();
+                break;
             case 3: // Mağaza
-
+                GoToDoStore();
+                break;
             case 4: // Harita
                 ToWhereLocation();
+                break;
         }
     }
 
@@ -358,10 +556,4 @@ public class GameService implements IGame
         return false;
     }
     /***********************************/
-
-
-
-    /*************  DİĞER İŞLEMLER  ***************/
-    /***********************************/
-
 }

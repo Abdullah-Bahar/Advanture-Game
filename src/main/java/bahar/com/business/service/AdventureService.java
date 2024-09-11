@@ -139,6 +139,7 @@ public class AdventureService implements IAdventure
             location = enemyLocation;
         }
     }
+    /***********************************/
 
 
 
@@ -148,7 +149,7 @@ public class AdventureService implements IAdventure
     public void initializeWar()
     {
         int eLocationId = DynamicAccessToStaticVariableId(enemyLocation);
-        int monsterId = WitchMonster(eLocationId);
+        int monsterId = FindMonster(eLocationId);
         Monster[] monsters = enemyLocation.CreateMonster(monsterId);
 
         for (int i = 0; i < monsters.length; i++)
@@ -165,7 +166,7 @@ public class AdventureService implements IAdventure
         IsGameWin();
     }
 
-    private int WitchMonster(int eLocationId)
+    private int FindMonster(int eLocationId)
     {
         return switch (eLocationId) {
             case Cave.ID -> Zombie.ID;
@@ -265,8 +266,9 @@ public class AdventureService implements IAdventure
 
 
 
+
     /********** IMPEMENT SAFEHOUSE ************/
-    // Buradaki implamentasyonlar SafeHouseService SInıfında implemente edilmiştir
+    // Buradaki implamentasyonlar SafeHouseService Sınıfında implemente edilmiştir
     /*
     private void PrintHealingAnimation()
     {
@@ -308,6 +310,8 @@ public class AdventureService implements IAdventure
     }
     */
     /***************************************/
+
+
 
 
     /********** PRINT İŞLEMLERİ ************/
@@ -352,11 +356,11 @@ public class AdventureService implements IAdventure
         System.out.format("+-----+------------+--------------+-------+\n");
 
         if (locationId != River.ID)
-            CreateEnemyLocationInfo(River.ID, River.NAME, River.CREATE_MONSTER_NAME, River.PRIZE, River.prize);
+            CreateEnemyLocationInfo(River.ID, River.NAME, River.CREATE_MONSTER_NAME, River.PRIZE, River.IS_PRIZE);
         if (locationId != Forest.ID)
-            CreateEnemyLocationInfo(Forest.ID, Forest.NAME, Forest.CREATE_MONSTER_NAME, Forest.PRIZE, Forest.prize);
+            CreateEnemyLocationInfo(Forest.ID, Forest.NAME, Forest.CREATE_MONSTER_NAME, Forest.PRIZE, Forest.IS_PRIZE);
         if (locationId != Cave.ID)
-            CreateEnemyLocationInfo(Cave.ID, Cave.NAME, Cave.CREATE_MONSTER_NAME, Cave.PRIZE, Cave.prize);
+            CreateEnemyLocationInfo(Cave.ID, Cave.NAME, Cave.CREATE_MONSTER_NAME, Cave.PRIZE, Cave.IS_PRIZE);
 
         System.out.format("+-----+------------+--------------+-------+\n");
     }

@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class EnemyLocation extends Location implements IObstacle
 {
-    public static boolean prize;
+    public static boolean IS_PRIZE;
 
     public EnemyLocation(String name, int id)
     {
@@ -51,4 +51,20 @@ public class EnemyLocation extends Location implements IObstacle
 
         return monsters;
     }
+
+    @Override
+    public void WelcomTo(Monster monster)
+    {
+        /*
+        String yildiz = "\n**********************************\n";
+        String welcome = "\n" + this.getName() +" bölgesine hoş geldin\n" +
+                "Bu bölgede " + monster.getName()  + "görülmektedir\n" +
+                (!EnemyLocation.IS_PRIZE ? "Eğer içerideki tüm canavarları öldürürsen maağradan " + monster. + ""
+                        : "") +
+                "Ayrıca mağazaya gidip seni güçlendirecek itemler alabilirsin. \n";
+
+        System.out.println(yildiz + welcome + yildiz);
+         */
+    }
+
 }

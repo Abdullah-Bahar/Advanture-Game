@@ -6,4 +6,5 @@ public interface IObstacle
 {
     Monster[] RandomMonster();
     Monster[] CreateMonster(int id);
+    void WelcomTo(Monster monster);
 }

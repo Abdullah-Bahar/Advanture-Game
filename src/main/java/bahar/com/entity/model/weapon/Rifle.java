@@ -4,10 +4,10 @@ import bahar.com.entity.core.thing.Weapon;
 
 public class Rifle extends Weapon
 {
-    public static String NAME = "Tüfek";
-    public static int ID = 3;
-    public static int DMAGE = 7;
-    public static int PRICE = 45;
+    public final static String NAME = "Tüfek";
+    public final static int ID = 3;
+    public final static int DMAGE = 7;
+    public final static int PRICE = 45;
 
     public Rifle()
     {

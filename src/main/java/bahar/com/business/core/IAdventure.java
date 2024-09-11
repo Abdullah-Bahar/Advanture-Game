@@ -10,6 +10,9 @@ public interface IAdventure
     void History();
     void CreatePlayer(int id);
     void LocationChange(int id);
+
+
+    // Buradan aşağısı düzenlenme gerek
     void initializeWar();
     void War(Player player, Monster monster);
     int FirstHit();
