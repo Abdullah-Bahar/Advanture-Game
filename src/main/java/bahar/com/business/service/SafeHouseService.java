@@ -65,7 +65,7 @@ public class SafeHouseService implements ISafeHouse
     public void HealthRenewal()
     {
         player.setHealth(getPlayer().getMaxHealth());
-        System.out.println("Canın Yenilendi...");
+        System.out.println("Canın Yenileniyor...");
     }
 
     public Player getPlayer() {

@@ -194,11 +194,14 @@ public class GameService implements IGame
 
 
     /**** LOKASYONA GİDİLDİĞİNE YAPILACAKLAR ****/
+
+    /*********** RIVER *************/
     private void GoToDoCave()
     {
         EntryEnemyLocation(new Zombie());
     }
 
+    /*********** RIVER *************/
     private void GoToDoForest()
     {
         EntryEnemyLocation(new Vampire());
@@ -268,7 +271,10 @@ public class GameService implements IGame
                 SelectedOptionEnemyLocationId();
                 break;
             case 3 : // Canavar Info
-                adventureService.getEnemyLocation().InfoMonster(adventureService.getListMonster().get(0));
+                if (!adventureService.getListMonster().isEmpty())
+                    adventureService.getEnemyLocation().InfoMonster(adventureService.getListMonster().get(0));
+                else
+                    System.out.println("\nÖlen canavarların nesini görmeyi planlıyorsun\n");
                 SelectedOptionEnemyLocationId();
                 break;
             case 4 : // Harita
@@ -304,7 +310,9 @@ public class GameService implements IGame
 
         // Tüm canavarları yendiyse ödülünü kazanır.
         if (adventureService.getListMonster().isEmpty())
-            adventureService.WarWin();
+            adventureService.WinWar();
+            adventureService.NewLine();
+            adventureService.PressEnter();
         }
 
         SelectedOptionEnemyLocationId();
@@ -346,9 +354,14 @@ public class GameService implements IGame
         safeHouseService.WelcomeToHouse();
         adventureService.PressEnter();
 
+        // Oyun kazanıp kazanmadığının konstrolü
+        adventureService.IsGameWin();
+
         // Canı azsa doldururuluyor
-        if (adventureService.getPlayer().getHealth() != adventureService.getPlayer().getMaxHealth())
+        if (adventureService.getPlayer().getHealth() != adventureService.getPlayer().getMaxHealth()) {
             safeHouseService.HealthRenewal();
+            adventureService.PressEnter();
+        }
 
         SelectedOptionHouseId();
     }

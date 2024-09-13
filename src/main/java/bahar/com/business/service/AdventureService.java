@@ -209,6 +209,9 @@ public class AdventureService implements IAdventure
                 this.player.getEnvanter().isWater() &&
                 this.player.getEnvanter().isWood())
         {
+            WinGame();
+            NewLine();
+            PressEnter();
             String finish = "\n" +
                     "****************************\n" +
                     "YOU WIN\n" +
@@ -218,26 +221,27 @@ public class AdventureService implements IAdventure
         }
     }
 
-    public void WarWin()
+    // Düşmanlarla olan fight'ı kazandığında çağrılır
+    public void WinWar()
     {
         switch (location.getId())
         {
             case Cave.ID:
                 if(player.getEnvanter().isFood())
                     return;
-                Cave.IS_PRIZE = true;
+                Cave.IS_PRIZE_FOOD = true;
                 this.player.getEnvanter().setFood(true);
                 break;
             case Forest.ID:
                 if (player.getEnvanter().isWood())
                     return;
-                Forest.IS_PRIZE = true;
+                Forest.IS_PRIZE_WOOD = true;
                 this.player.getEnvanter().setWood(true);
                 break;
             case River.ID:
                 if (player.getEnvanter().isWater())
                     return;
-                River.IS_PRIZE = true;
+                River.IS_PRIZE_WATER = true;
                 this.player.getEnvanter().setWater(true);
                 break;
             default:
@@ -245,7 +249,8 @@ public class AdventureService implements IAdventure
                 return;
         }
 
-        System.out.println(enemyLocation.getPrize() + " Ödülün Envanterine eklendi\n");
+        NewLine();
+        System.out.println("\""+ enemyLocation.getPrize() + "\" Ödülün Envanterine eklendi\n");
     }
 
     private void MonsterAttack(Player player, Monster monster)
@@ -271,6 +276,18 @@ public class AdventureService implements IAdventure
         Random r = new Random();
 
         return r.nextInt(2);
+    }
+
+    private void WinGame()
+    {
+        String finish = "Bu adada hayatta kalmak için göstermiş olduğun mücadele ve direnişinle birlikte adadan kurtulmak için\n" +
+                "gerekli olan tüm eşyaları toplayarak ülkene dönebilirsin\n" +
+                "\n" +
+                "İmparatorluğun için göstermiş olduğun bu mücadele ülkenin yer yanında dillere destan olacak.\n" +
+                "Herkes seni kahraman olarak bilecek. Ancak sen her gece yatarkan bu görevde kaybettiğin arkadaşlarını anacaksız\n" +
+                "Ama ne olursa olsun imparatorluğun ve arakadaşların için yaşamaya devam edeceksin.\n" +
+                "\n";
+        System.out.println(finish);
     }
 
     public void GameOver()
@@ -376,11 +393,11 @@ public class AdventureService implements IAdventure
         System.out.format("+-----+------------+--------------+-------+-----------+\n");
 
         if (locationId != River.ID)
-            CreateEnemyLocationInfo(River.ID, River.NAME, River.CREATE_MONSTER_NAME, River.PRIZE, River.IS_PRIZE);
+            CreateEnemyLocationInfo(River.ID, River.NAME, River.CREATE_MONSTER_NAME, River.PRIZE, River.IS_PRIZE_WATER);
         if (locationId != Forest.ID)
-            CreateEnemyLocationInfo(Forest.ID, Forest.NAME, Forest.CREATE_MONSTER_NAME, Forest.PRIZE, Forest.IS_PRIZE);
+            CreateEnemyLocationInfo(Forest.ID, Forest.NAME, Forest.CREATE_MONSTER_NAME, Forest.PRIZE, Forest.IS_PRIZE_WOOD);
         if (locationId != Cave.ID)
-            CreateEnemyLocationInfo(Cave.ID, Cave.NAME, Cave.CREATE_MONSTER_NAME, Cave.PRIZE, Cave.IS_PRIZE);
+            CreateEnemyLocationInfo(Cave.ID, Cave.NAME, Cave.CREATE_MONSTER_NAME, Cave.PRIZE, Cave.IS_PRIZE_FOOD);
 
         System.out.format("+-----+------------+--------------+-------+-----------+\n");
     }
