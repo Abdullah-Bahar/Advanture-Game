@@ -13,10 +13,5 @@ public interface IAdventure
 
 
     // Buradan aşağısı düzenlenme gerek
-    void initializeWar();
-    void War(Player player, Monster monster);
-    int FirstHit();
-    void GameOver();
-    void Araf();
-
+    void War(Monster monster, Player player);
 }

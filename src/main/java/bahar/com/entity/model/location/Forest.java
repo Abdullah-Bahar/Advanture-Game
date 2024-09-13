@@ -9,6 +9,6 @@ public class Forest extends EnemyLocation
     public static final String CREATE_MONSTER_NAME = "Vampir";
     public static final int ID = 3;
     public Forest() {
-        super(NAME, ID);
+        super(NAME, ID, PRIZE);
     }
 }

@@ -16,6 +16,7 @@ public class SafeHouseService implements ISafeHouse
     {
         String yildiz = "\n**********************************\n";
         String welcome = "\nGüvenli eve hoş geldin.\n" +
+                "\n" +
                 "Burada endişelenmene gerek yok. Güvendesin merak etme.\n" +
                 "Canın azaldığında buraya gelip canını yenileyebilirsin.\n" +
                 "Ayrıca mağazaya gidip seni güçlendirecek itemler alabilirsin. \n";

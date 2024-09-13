@@ -15,6 +15,7 @@ import bahar.com.entity.model.monster.Bear;
 import bahar.com.entity.model.monster.Vampire;
 import bahar.com.entity.model.monster.Zombie;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,6 +27,7 @@ public class AdventureService implements IAdventure
     private SafeLocation safeLocation;
     private EnemyLocation enemyLocation;
     private Location location;
+    private List<Monster> listMonster;
 
     // Ctor
     public AdventureService()
@@ -123,9 +125,6 @@ public class AdventureService implements IAdventure
             case 4: // Mağara
                 setEnemyLocation(new Cave());
                 break;
-            default:
-                LocationChange(SafeHouse.ID);
-                System.out.println("Lokasyon Değişiminde Bir Hata Oluştu!\n");
         }
 
         if (id == 1)
@@ -146,103 +145,127 @@ public class AdventureService implements IAdventure
 
     /************* WAR **************/
     @Override
-    public void initializeWar()
+    public void War(Monster monster, Player player)
     {
-        int eLocationId = DynamicAccessToStaticVariableId(enemyLocation);
-        int monsterId = FindMonster(eLocationId);
-        Monster[] monsters = enemyLocation.CreateMonster(monsterId);
-
-        for (int i = 0; i < monsters.length; i++)
+        int i = 1;
+        if (FirstHit() == 1)
         {
-            this.War(this.player, monsters[i]);
-            if (this.player.getHealth() <= 0)
+            while(player.getHealth() > 0 && monster.getHealth() > 0)
             {
-                GameOver();
-                break;
+                System.out.println(i + ". Raound : ");
+                System.out.println("-------------------");
+
+                PlayerAttack(this.player, monster);
+                if (monster.getHealth() > 0) {
+                    NewLine();
+                    MonsterAttack(this.player, monster);
+                }
+                System.out.println("-------------------");
+                NewLine();
+                i++;
             }
-            this.player.setMoney(this.player.getMoney() + monsters[i].getMoney());
         }
-        IsWinWar(monsterId);
-        IsGameWin();
+        else // FirstHit == 0
+        {
+            while(player.getHealth() > 0 && monster.getHealth() > 0)
+            {
+                System.out.println(i + ". Raound : ");
+                System.out.println("-------------------");
+
+                MonsterAttack(this.player, monster);
+                NewLine();
+                if (this.player.getHealth() > 0) {
+                    NewLine();
+                    PlayerAttack(this.player, monster);
+                }
+                System.out.println("-------------------");
+                NewLine();
+                i++;
+            }
+        }
+
+        NewLine();
+        System.out.println("SAVAŞ SONUCU : ");
+        System.out.println("-------------------");
+
+        if (player.getHealth() == 0)
+        {
+            System.out.println(userName + ", ÖLDÜN!!!.");
+            System.out.println("-------------------");
+            GameOver();
+        }
+
+        System.out.println(monster.getName() + " Öldü.");
+        System.out.println(monster.getMoney() + " Gold Kazandın.");
+        System.out.println("-------------------");
+
+        // Öldürdüğü zombinin parasını alır.
+        player.setMoney(player.getMoney() + monster.getMoney());
     }
 
-    private int FindMonster(int eLocationId)
-    {
-        return switch (eLocationId) {
-            case Cave.ID -> Zombie.ID;
-            case Forest.ID -> Vampire.ID;
-            case River.ID -> Bear.ID;
-            default -> 0;
-        };
-    }
-
-    private void IsGameWin()
+    public void IsGameWin()
     {
         if (this.player.getEnvanter().isFood() &&
                 this.player.getEnvanter().isWater() &&
                 this.player.getEnvanter().isWood())
         {
-            System.out.println("Oyunu kazandın!!!!");
+            String finish = "\n" +
+                    "****************************\n" +
+                    "YOU WIN\n" +
+                    "****************************\n";
+            System.out.println(finish);
             System.exit(0);
         }
     }
 
-    private void IsWinWar(int monsterId)
+    public void WarWin()
     {
-        switch (monsterId)
+        switch (location.getId())
         {
-            case Zombie.ID:
+            case Cave.ID:
+                if(player.getEnvanter().isFood())
+                    return;
+                Cave.IS_PRIZE = true;
                 this.player.getEnvanter().setFood(true);
                 break;
-            case Vampire.ID:
+            case Forest.ID:
+                if (player.getEnvanter().isWood())
+                    return;
+                Forest.IS_PRIZE = true;
                 this.player.getEnvanter().setWood(true);
                 break;
-            case Bear.ID:
+            case River.ID:
+                if (player.getEnvanter().isWater())
+                    return;
+                River.IS_PRIZE = true;
                 this.player.getEnvanter().setWater(true);
                 break;
             default:
                 System.out.println("Ödül kazanılamadı!");
+                return;
         }
-    }
 
-    @Override
-    public void War(Player player, Monster monster)
-    {
-        if (FirstHit() == 1)
-        {
-            while(player.getHealth() <= 0 || monster.getHealth() <= 0)
-            {
-                PlayerAttack(this.player, monster);
-                if (monster.getHealth() > 0)
-                    MonsterAttack(this.player, monster);
-            }
-        }
-        else // FirstHit == 0
-        {
-            while(player.getHealth() <= 0 || monster.getHealth() <= 0)
-            {
-                MonsterAttack(this.player, monster);
-                if (this.player.getHealth() > 0)
-                    PlayerAttack(this.player, monster);
-            }
-        }
+        System.out.println(enemyLocation.getPrize() + " Ödülün Envanterine eklendi\n");
     }
 
     private void MonsterAttack(Player player, Monster monster)
     {
         int hasar = monster.getDamage() - player.getBlok();
 
-        player.setHealth(hasar);
+        System.out.println(monster.getName() + " Vuruyor : " + monster.getDamage() + " Hasar");
+        player.setHealth(player.getHealth() - hasar);
+        System.out.println(getUserName() + " Kalan Can : " + getPlayer().getHealth());
     }
 
     private void PlayerAttack(Player player, Monster monster)
     {
         int hasar = player.getDamage();
 
-        monster.setHealth(hasar);
+        System.out.println(getUserName() + " Vuruyor : " + player.getDamage() + " Hasar");
+        monster.setHealth(monster.getHealth() - hasar);
+        System.out.println(monster.getName() + " Kalan Can : " + monster.getHealth());
     }
 
-    @Override
     public int FirstHit()
     {
         Random r = new Random();
@@ -250,17 +273,14 @@ public class AdventureService implements IAdventure
         return r.nextInt(2);
     }
 
-    @Override
     public void GameOver()
     {
-        System.out.println("Malesef Oyunu Kaybettin");
-        System.exit(0);
-    }
-
-    @Override
-    public void Araf()
-    {
-        // Daha donraki sürümlerde
+        String finish = "\n" +
+                "****************************\n" +
+                "GAME OVER\n" +
+                "****************************\n";
+        System.out.println(finish);
+        System.exit(1);
     }
     /***********************************/
 
@@ -317,7 +337,7 @@ public class AdventureService implements IAdventure
     /********** PRINT İŞLEMLERİ ************/
     public void PrintCurrentLocation() // Mevcut konum
     {
-        System.out.println("Karakterinin Durumu : ");
+        System.out.println("Karakterinin Konumu : ");
 
         // Tablo başlığını oluşturuyoruz
         System.out.format("+-------+--------------+\n");
@@ -334,7 +354,7 @@ public class AdventureService implements IAdventure
     public void PrintSafeLocationInfo(int locationId)
     {
         System.out.format("+-----+------------+\n");
-        System.out.format("| ID  | SAFE NAME  |\n");
+        System.out.format("| ID  | NAME       |\n");
         System.out.format("+-----+------------+\n");
 
         if (locationId != SafeHouse.ID)
@@ -351,9 +371,9 @@ public class AdventureService implements IAdventure
     // Enmey bölgelerini yazdırma
     public void PrintEnemyLocationInfo(int locationId)
     {
-        System.out.format("+-----+------------+--------------+-------+\n");
-        System.out.format("| ID  | NAME       | MONSTER NAME | PRIZE |\n");
-        System.out.format("+-----+------------+--------------+-------+\n");
+        System.out.format("+-----+------------+--------------+-------+-----------+\n");
+        System.out.format("| ID  | NAME       | MONSTER NAME | PRIZE | IS PRIZE  |\n");
+        System.out.format("+-----+------------+--------------+-------+-----------+\n");
 
         if (locationId != River.ID)
             CreateEnemyLocationInfo(River.ID, River.NAME, River.CREATE_MONSTER_NAME, River.PRIZE, River.IS_PRIZE);
@@ -362,11 +382,11 @@ public class AdventureService implements IAdventure
         if (locationId != Cave.ID)
             CreateEnemyLocationInfo(Cave.ID, Cave.NAME, Cave.CREATE_MONSTER_NAME, Cave.PRIZE, Cave.IS_PRIZE);
 
-        System.out.format("+-----+------------+--------------+-------+\n");
+        System.out.format("+-----+------------+--------------+-------+-----------+\n");
     }
 
     private void CreateEnemyLocationInfo(int id, String name, String monsterName, String prizeName, boolean condition) {
-        System.out.format("| %-3d | %-10s | %-12s | %-5s |\n", id, name, monsterName, prizeName + (condition ? " (ALINDI)" : ""));
+        System.out.format("| %-3d | %-10s | %-12s | %-5s | %-9s |\n", id, name, monsterName, prizeName, (condition ? " ALINDI" : "ALINMADI"));
     }
 
     // Print Character
@@ -487,6 +507,14 @@ public class AdventureService implements IAdventure
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public List<Monster> getListMonster() {
+        return listMonster;
+    }
+
+    public void setListMonster(List<Monster> listMonster) {
+        this.listMonster = listMonster;
     }
     /*********************************/
 }

@@ -10,8 +10,6 @@ public class Cave extends EnemyLocation
     public static final int ID = 4;
 
     public Cave() {
-        super(NAME, ID);
+        super(NAME, ID, PRIZE);
     }
-
-
 }

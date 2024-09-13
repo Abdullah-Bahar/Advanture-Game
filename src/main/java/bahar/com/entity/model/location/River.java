@@ -9,6 +9,6 @@ public class River extends EnemyLocation
     public static final String CREATE_MONSTER_NAME = "Ayı";
     public final static int ID = 2;
     public River() {
-        super(NAME, ID);
+        super(NAME, ID, PRIZE);
     }
 }
