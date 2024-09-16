@@ -1,7 +1,6 @@
 package bahar.com.business.service;
 
 import bahar.com.business.core.IAdventure;
-import bahar.com.business.core.ISafeHouse;
 import bahar.com.entity.core.character.Monster;
 import bahar.com.entity.core.character.Player;
 import bahar.com.entity.core.location.EnemyLocation;
@@ -11,9 +10,6 @@ import bahar.com.entity.model.character.Archer;
 import bahar.com.entity.model.character.Knight;
 import bahar.com.entity.model.character.Samurai;
 import bahar.com.entity.model.location.*;
-import bahar.com.entity.model.monster.Bear;
-import bahar.com.entity.model.monster.Vampire;
-import bahar.com.entity.model.monster.Zombie;
 
 import java.util.List;
 import java.util.Random;
@@ -203,6 +199,7 @@ public class AdventureService implements IAdventure
         player.setMoney(player.getMoney() + monster.getMoney());
     }
 
+    @Override
     public void IsGameWin()
     {
         if (this.player.getEnvanter().isFood() &&
@@ -222,6 +219,8 @@ public class AdventureService implements IAdventure
     }
 
     // Düşmanlarla olan fight'ı kazandığında çağrılır
+    // o bölgedeki ödülü kazanıp kazanmadığı kontrol edilir.
+    @Override
     public void WinWar()
     {
         switch (location.getId())
@@ -253,7 +252,8 @@ public class AdventureService implements IAdventure
         System.out.println("\""+ enemyLocation.getPrize() + "\" Ödülün Envanterine eklendi\n");
     }
 
-    private void MonsterAttack(Player player, Monster monster)
+    @Override
+    public void MonsterAttack(Player player, Monster monster)
     {
         int hasar = monster.getDamage() - player.getBlok();
 
@@ -262,7 +262,8 @@ public class AdventureService implements IAdventure
         System.out.println(getUserName() + " Kalan Can : " + getPlayer().getHealth());
     }
 
-    private void PlayerAttack(Player player, Monster monster)
+    @Override
+    public void PlayerAttack(Player player, Monster monster)
     {
         int hasar = player.getDamage();
 
@@ -271,6 +272,7 @@ public class AdventureService implements IAdventure
         System.out.println(monster.getName() + " Kalan Can : " + monster.getHealth());
     }
 
+    @Override
     public int FirstHit()
     {
         Random r = new Random();
@@ -278,7 +280,7 @@ public class AdventureService implements IAdventure
         return r.nextInt(2);
     }
 
-    private void WinGame()
+    public void WinGame()
     {
         String finish = "Bu adada hayatta kalmak için göstermiş olduğun mücadele ve direnişinle birlikte adadan kurtulmak için\n" +
                 "gerekli olan tüm eşyaları toplayarak ülkene dönebilirsin\n" +
@@ -352,7 +354,8 @@ public class AdventureService implements IAdventure
 
 
     /********** PRINT İŞLEMLERİ ************/
-    public void PrintCurrentLocation() // Mevcut konum
+    @Override // Mevcut konum
+    public void PrintCurrentLocation()
     {
         System.out.println("Karakterinin Konumu : ");
 
@@ -367,7 +370,7 @@ public class AdventureService implements IAdventure
         System.out.format("+-------+--------------+\n");
     }
 
-    // Safe bölgelerini yazdırma
+    @Override // Safe bölgelerini yazdırma
     public void PrintSafeLocationInfo(int locationId)
     {
         System.out.format("+-----+------------+\n");
@@ -380,12 +383,12 @@ public class AdventureService implements IAdventure
         System.out.format("+-----+------------+\n");
     }
 
-    public void CreateSafeLocationInfo(int id, String name)
+    private void CreateSafeLocationInfo(int id, String name)
     {
         System.out.format("| %-3d | %-10s |\n", id, name);
     }
 
-    // Enmey bölgelerini yazdırma
+    @Override // Enmey bölgelerini yazdırma
     public void PrintEnemyLocationInfo(int locationId)
     {
         System.out.format("+-----+------------+--------------+-------+-----------+\n");
@@ -406,7 +409,7 @@ public class AdventureService implements IAdventure
         System.out.format("| %-3d | %-10s | %-12s | %-5s | %-9s |\n", id, name, monsterName, prizeName, (condition ? " ALINDI" : "ALINMADI"));
     }
 
-    // Print Character
+    @Override // Print Character
     public void PrintCharacterInfo()
     {
         System.out.format("+-----+------------+------+-------+------+\n");
@@ -420,7 +423,7 @@ public class AdventureService implements IAdventure
         System.out.format("+-----+------------+------+-------+------+\n");
     }
 
-    public void CreateCharacterInfo(int id, String name, int health, int damage, int money)
+    private void CreateCharacterInfo(int id, String name, int health, int damage, int money)
     {
         System.out.format("| %-3d | %-10s | %-4d | %-5d | %-4d |\n", id, name, health, damage, money);
     }
@@ -470,6 +473,7 @@ public class AdventureService implements IAdventure
         return id;
     }
 
+    @Override
     public void PressEnter()
     {
         Scanner s = new Scanner(System.in); // Scanner nesnesi oluşturuyoruz.
@@ -477,6 +481,7 @@ public class AdventureService implements IAdventure
         s.nextLine();
     }
 
+    @Override
     public void NewLine()
     {
         System.out.print("\n");

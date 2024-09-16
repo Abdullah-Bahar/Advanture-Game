@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class EnemyLocation extends Location implements IObstacle
 {
-    private boolean isPrize;
+    private boolean isPrize; // Ödül alındı mı ?
     private String prize;  // Ödül adı
 
     public EnemyLocation(String name, int id, boolean isPrize, String prize)
@@ -22,7 +22,7 @@ public class EnemyLocation extends Location implements IObstacle
         this.prize = prize;
     }
 
-
+    /******* İMPLAMENTASYON "IObstacle" ******/
     @Override
     public List<Monster> CreateMonster(int id)
     {
@@ -91,8 +91,10 @@ public class EnemyLocation extends Location implements IObstacle
         System.out.println("İçeriden gelen seslere bakacak olursak içeride " + num + " tane canavar olabilir\n" +
                 "Dikkatli ol!");
     }
+    /******************************/
 
 
+    /******* GETTER & SETTER ******/
     public String getPrize() {
         return prize;
     }
@@ -108,4 +110,5 @@ public class EnemyLocation extends Location implements IObstacle
     public void setPrize(boolean prize) {
         isPrize = prize;
     }
+    /******************************/
 }

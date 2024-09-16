@@ -15,6 +15,8 @@ public class Player extends CoreEntitiy
         this.envanter = new Envanter();
     }
 
+
+    /**** MAĞAZADAN ALIŞVERİŞ YAPTIĞINDA HASAR VE BLOKLAMA GÜNCELLEMESİ ****/
     public void updateDmage()
     {
         super.setDamage(this.getDamage() + this.envanter.getWeapon().getDmage());
@@ -24,9 +26,9 @@ public class Player extends CoreEntitiy
     {
         this.setBlok(envanter.getArmor().getBlock());
     }
+    /***********************************/
 
 
-    //-------------- GETTER & SETTER ----------------
     public int getMaxHealth() {
         return maxHealth;
     }

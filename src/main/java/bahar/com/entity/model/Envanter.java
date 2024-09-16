@@ -5,7 +5,7 @@ import bahar.com.entity.core.thing.Weapon;
 
 public class Envanter
 {
-    // Adadan kurtulması için toplaması gereken şeyler
+    // Adadan kurtulması için toplaması gereken itemler
     private boolean food;
     private boolean water;
     private boolean wood;

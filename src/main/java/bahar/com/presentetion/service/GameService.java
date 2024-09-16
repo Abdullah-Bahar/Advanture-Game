@@ -25,7 +25,6 @@ import bahar.com.entity.model.weapon.Sword;
 import bahar.com.exception.InValidIdException;
 import bahar.com.presentetion.core.IGame;
 
-import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -48,6 +47,7 @@ public class GameService implements IGame
         InitializeStart();
     }
 
+    @Override
     public void InitializeStart()
     {
         String name;
@@ -119,6 +119,9 @@ public class GameService implements IGame
         GoToDoHouse();
     }
 
+    // Haritada gidilecek yerleri listeleyip kullanıcın girdiği inputun
+    // validasyonunu yapıp location değişimi için ilgili methodu çağıran methodtur.
+    @Override
     public void ToWhereLocation()
     {
         // Location Haritası : Şuan nerede ve nerelere gidebilir.
@@ -160,7 +163,10 @@ public class GameService implements IGame
         GoToDoLocationNumber(locationDoGoId);
     }
 
-    private void GoToDoLocationNumber(int locationDoGoId)
+
+    // "ToWhereLocation()" methodunda kontrol edilen inputa göre lokasyon değilimi yapan method
+    @Override
+    public void GoToDoLocationNumber(int locationDoGoId)
     {
         switch (locationDoGoId)
         {
@@ -195,25 +201,30 @@ public class GameService implements IGame
 
     /**** LOKASYONA GİDİLDİĞİNE YAPILACAKLAR ****/
 
-    /*********** RIVER *************/
-    private void GoToDoCave()
+    /*********** CAVE *************/
+    @Override
+    public void GoToDoCave()
     {
         EntryEnemyLocation(new Zombie());
     }
 
-    /*********** RIVER *************/
-    private void GoToDoForest()
+    /*********** FOREST *************/
+    @Override
+    public void GoToDoForest()
     {
         EntryEnemyLocation(new Vampire());
     }
 
     /*********** RIVER *************/
-    private void GoToDoRiver()
+    @Override
+    public void GoToDoRiver()
     {
         EntryEnemyLocation(new Bear());
     }
 
-    private void EntryEnemyLocation(Monster monster)
+    /******** ENEMY LOCATİON GENERİC PROCESSİNG *********/
+    @Override
+    public void EntryEnemyLocation(Monster monster)
     {
         adventureService.getEnemyLocation().WelcomTo(monster);
         adventureService.NewLine();
@@ -227,7 +238,8 @@ public class GameService implements IGame
         SelectedOptionEnemyLocationId();
     }
 
-    private void SelectedOptionEnemyLocationId()
+    @Override
+    public void SelectedOptionEnemyLocationId()
     {
         int selectecId;
 
@@ -256,7 +268,8 @@ public class GameService implements IGame
         OptionsEnemyLocation(selectecId);
     }
 
-    private void OptionsEnemyLocation(int selectecId)
+    @Override
+    public void OptionsEnemyLocation(int selectecId)
     {
         switch (selectecId)
         {
@@ -283,7 +296,8 @@ public class GameService implements IGame
         }
     }
 
-    private void War()
+    @Override
+    public void War()
     {
         int monsterIndex = adventureService.getListMonster().size() - 1;
 
@@ -318,7 +332,8 @@ public class GameService implements IGame
         SelectedOptionEnemyLocationId();
     }
 
-    private void PrintMenuEnemyLocation()
+    @Override
+    public void PrintMenuEnemyLocation()
     {
         adventureService.NewLine();
         System.out.println("Menü : ");
@@ -330,7 +345,8 @@ public class GameService implements IGame
         System.out.println(menu);
     }
 
-    private void HowManyMonster()
+    @Override
+    public void HowManyMonster()
     {
         adventureService.NewLine();
 
@@ -348,7 +364,8 @@ public class GameService implements IGame
 
 
     /*********** SAFE HOUSE *************/
-    private void GoToDoHouse()
+    @Override
+    public void GoToDoHouse()
     {
         // Safe House'ye geliş mesajı
         safeHouseService.WelcomeToHouse();
@@ -366,7 +383,8 @@ public class GameService implements IGame
         SelectedOptionHouseId();
     }
 
-    private void SelectedOptionHouseId()
+    @Override
+    public void SelectedOptionHouseId()
     {
         int selectecId;
 
@@ -395,7 +413,8 @@ public class GameService implements IGame
         OptionsHouse(selectecId);
     }
 
-    private void OptionsHouse(int Id)
+    @Override
+    public void OptionsHouse(int Id)
     {
         switch (Id)
         {
@@ -416,7 +435,8 @@ public class GameService implements IGame
         }
     }
 
-    private void PrintOptionsHouse()
+    @Override
+    public void PrintOptionsHouse()
     {
         adventureService.NewLine();
         System.out.println("Menü : ");
@@ -431,7 +451,9 @@ public class GameService implements IGame
 
 
     /*********** STORE *************/
-    private void GoToDoStore() {
+    @Override
+    public void GoToDoStore()
+    {
         storeService.WelcomeToStore();
         adventureService.PressEnter();
 
@@ -439,7 +461,8 @@ public class GameService implements IGame
     }
 
     // Kategori sayfası menüsü için
-    private void SelectedCategoriesStoreId()
+    @Override
+    public void SelectedCategoriesStoreId()
     {
         int selectedId;
 
@@ -460,7 +483,8 @@ public class GameService implements IGame
     }
 
     // Kategori olan Weapon ürünleri sayfası
-    private void SelectedWeaponStoreId()
+    @Override
+    public void SelectedWeaponStoreId()
     {
         int selectedId;
 
@@ -486,7 +510,8 @@ public class GameService implements IGame
     }
 
     // Kategori olan Armor ürünleri sayfası
-    private void SelectedArmorStoreId()
+    @Override
+    public void SelectedArmorStoreId()
     {
         int selectedId;
 
@@ -511,7 +536,9 @@ public class GameService implements IGame
         SelectedArmorStoreId();
     }
 
-    private void BuyWeapoonById(int id) {
+    @Override
+    public void BuyWeapoonById(int id)
+    {
         Weapon weapon = storeService.BuyWeepon(id);
         boolean doYouHaveMoney = storeService.CheckMoney(adventureService.getPlayer().getMoney(), weapon.getPrice());
 
@@ -548,8 +575,9 @@ public class GameService implements IGame
         adventureService.NewLine();
     }
 
-    private void BuyArmorById(int id) {
-
+    @Override
+    public void BuyArmorById(int id)
+    {
         Armor armor = storeService.BuyArmor(id);
         boolean doYouHaveMoney = storeService.CheckMoney(adventureService.getPlayer().getMoney(), armor.getPrice());
 
@@ -587,7 +615,8 @@ public class GameService implements IGame
     }
 
     // Menülerin listelenmesi - İlgili menüye gitmek için tıklanan tışun kontrolü
-    private int getSelectedId(Runnable printAction, int... validIds) {
+    @Override
+    public int getSelectedId(Runnable printAction, int... validIds) {
         int selectedId;
         while (true)
         {

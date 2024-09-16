@@ -4,6 +4,7 @@ public class Armor extends Thing
 {
     private String name;
     private int block;
+
     public Armor(String name, int price, int id, int block)
     {
         super(name, price, id);

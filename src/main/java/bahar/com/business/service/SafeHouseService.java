@@ -25,7 +25,8 @@ public class SafeHouseService implements ISafeHouse
     }
 
     @Override
-    public void PrintCharacterStatus() {
+    public void PrintCharacterStatus()
+    {
         System.out.println("Karakterinin Durumu : ");
 
         // Tablo başlığını oluşturuyoruz
@@ -44,7 +45,8 @@ public class SafeHouseService implements ISafeHouse
     }
 
     @Override
-    public void ShowEnvanter() {
+    public void ShowEnvanter()
+    {
         System.out.println("Mevcut Envanter:");
 
         // Tablo başlığını oluşturuyoruz
