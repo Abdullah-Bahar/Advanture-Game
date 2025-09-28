@@ -129,7 +129,7 @@ public class GameService implements IGame
 
         int locationID = adventureService.getLocation().getId(); // Nerede olduğunu gösterir
         int locationDoGoId;
-        String soru = "\nLütfen gitmek istediğin yerin ID'sini girer misiniz : (Geri gelmek için 0'rı tuşlayın)\n";
+        String soru = "\nLütfen gitmek istediğin yerin ID'sini girer misiniz : (Geri gelmek için 0'ı tuşlayın)\n";
 
         while (true)
         {
@@ -467,7 +467,6 @@ public class GameService implements IGame
         int selectedId;
 
         selectedId = getSelectedId(storeService::PrintCategories,0,1,2);
-
         switch (selectedId)
         {
             case 0: // Bir önceki sayfaya döner
@@ -622,6 +621,7 @@ public class GameService implements IGame
         {
             System.out.println("Lütfen Seçim Yapınız : (Geri Çıkmak İçin 0'ı tışlayınız)");
             printAction.run();
+            printMoneyPlayer();
             System.out.print("Seçeneğiniz : ");
             try
             {
@@ -657,6 +657,13 @@ public class GameService implements IGame
 
         // Güvenli evdeyse sadece düşman alanları gözükecek
         adventureService.PrintEnemyLocationInfo(adventureService.getLocation().getId());
+    }
+
+    // Oyuncunun mevcut bakiyesini yazdırma
+    private void printMoneyPlayer() {
+        System.out.println("+------------------------+");
+        System.out.format("| %-22s |\n", "Mevcut Bakiyeniz: " + adventureService.getPlayer().getMoney());
+        System.out.println("+------------------------+");
     }
 
     // Burası offline

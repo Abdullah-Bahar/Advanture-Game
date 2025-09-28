@@ -158,6 +158,10 @@ public class AdventureService implements IAdventure
                 }
                 System.out.println("-------------------");
                 NewLine();
+
+                if (!(player.getHealth() == 0 || monster.getHealth() == 0))
+                    WarPressEnter(i);
+
                 i++;
             }
         }
@@ -176,11 +180,16 @@ public class AdventureService implements IAdventure
                 }
                 System.out.println("-------------------");
                 NewLine();
+
+                if (!(player.getHealth() == 0 || monster.getHealth() == 0))
+                    WarPressEnter(i);
+
                 i++;
             }
         }
 
         NewLine();
+        ResultWarPressEnter();
         System.out.println("SAVAŞ SONUCU : ");
         System.out.println("-------------------");
 
@@ -480,6 +489,21 @@ public class AdventureService implements IAdventure
         System.out.println("Press \"ENTER\" to continue...");
         s.nextLine();
     }
+
+    public void WarPressEnter(int round)
+    {
+        Scanner s = new Scanner(System.in); // Scanner nesnesi oluşturuyoruz.
+        System.out.println((round + 1) + ". Round'a geçmek için \"ENTER\"'a tıklayınız...");
+        s.nextLine();
+    }
+
+    public void ResultWarPressEnter()
+    {
+        Scanner s = new Scanner(System.in); // Scanner nesnesi oluşturuyoruz.
+        System.out.println("Savaş sonucunu görüntülemek için \"ENTER\"'a tıklayınız...");
+        s.nextLine();
+    }
+
 
     @Override
     public void NewLine()
