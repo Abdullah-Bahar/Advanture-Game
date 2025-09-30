@@ -105,7 +105,8 @@ Proje, katmanlı mimari kullanılarak geliştirilmiştir:
 
 ## UML Diyagramı
 
-```mermaidclassDiagram
+```mermaid
+classDiagram
 
 	class Main {
 	  # game : GameService
