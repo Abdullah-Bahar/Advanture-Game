@@ -3,6 +3,7 @@
 ## :book: İçindekiler
 
 - [Proje Hakkında](#bulb-proje-hakkında)
+- [Kurulum ve Çalıştırma](#computer-kurulum-ve-çalıştırma)
 - [Oyun Senaryosu](#scroll-oyun-senaryosu)
 - [Oyun Mekanikleri](#man_technologist-soyun-mekanikleri)
 - [Teknik Mimari ve Tasarım Prensipleri](#gear-teknik-mimari-ve-tasarım-prensipleri)
