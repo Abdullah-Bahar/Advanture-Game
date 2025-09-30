@@ -3,7 +3,7 @@
 ## :book: İçindekiler
 
 - [Proje Hakkında](#bulb-proje-hakkında)
-- [Oyun Senaryosu](#map-oyun-senaryosu)
+- [Oyun Senaryosu](#scroll-oyun-senaryosu)
 - [Oyun Mekanikleri](#man_technologist-soyun-mekanikleri)
 - [Teknik Mimari ve Tasarım Prensipleri](#gear-teknik-mimari-ve-tasarım-prensipleri)
   - [OOP](#oop)
@@ -40,7 +40,7 @@ Bu proje, Java tabanlı bir metin tabanlı macera oyunudur ve **IDE (IntelliJ ID
 2. **`Main.java`** dosyasını bulun.
 3. IDE’nin **Run / Play** butonuna tıklayarak oyunu başlatın.
 
-## :map: Oyun Senaryosu
+## :scroll: Oyun Senaryosu
 
 1. :crossed_swords: **Başlangıç**
 	- Oyunu adını girer.
@@ -53,7 +53,7 @@ Bu proje, Java tabanlı bir metin tabanlı macera oyunudur ve **IDE (IntelliJ ID
 	- Mağazaya gidebilir.
 	- Haritadan düşman bölgelerine gidebilir.
 
-3. :shopping_bags: **Store (Mağaza)**  
+3. :shopping_cart: **Store (Mağaza)**  
    - Kazanılan paralar ile silah ve zırh satın alınabilir.
 
 4. :dagger: **Düşman Bölgeleri**
@@ -80,14 +80,14 @@ Bu proje, Java tabanlı bir metin tabanlı macera oyunudur ve **IDE (IntelliJ ID
 | Archer | 18 | 7 | 20 | Yüksek hasar, düşük sağlık |
 | Knight | 30 | 3 | 15 | Yüksek sağlık, düşük hasar |
 
-### :map: Location
+### :round_pushpin: Location
 
 | Bölge | Açıklama |
 | - | - |
 | Safe House | Güvenli bölge, burada oyuncu mağazadan alışveriş yapı can yenileyebilir |
 | Enemy Location | Düşman bölgelerinde karşılaşılan canavarları alt edip ödüller elde eder |
 
-### :skull_crossbones: Enemy Locaiton
+### :japanese_ogre: Enemy Locaiton
 
 | Bölge | Karşılaşılan Canavar | Ödül |
 | - | - | - |
@@ -95,7 +95,7 @@ Bu proje, Java tabanlı bir metin tabanlı macera oyunudur ve **IDE (IntelliJ ID
 | Forest | Vampire | Firewood |
 | River | Bear | Water |
 
-### :monster: Monster
+### :alien: Monster
 
 | Canavar | Sağlık | Hasar | Para |
 | - | - | - | - |
@@ -107,7 +107,7 @@ Bu proje, Java tabanlı bir metin tabanlı macera oyunudur ve **IDE (IntelliJ ID
 
 Oyuncu kazandığı paralar ile mağazadan silah ve zırh alabilir.
 
-**Weapon**
+:gun: **Weapon**
 
 | Silah | Hasar | Fiyat |
 | - | - | - |
@@ -115,7 +115,7 @@ Oyuncu kazandığı paralar ile mağazadan silah ve zırh alabilir.
 | Sword | 3 | 35 |
 | Rifle | 7 | 45 |
 
-**Armor**
+:coat: **Armor**
 
 | Zırh | Bloklama | Fiyat |
 | - | - | - |
